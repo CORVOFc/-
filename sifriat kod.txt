@@ -423,3 +423,41 @@ css
 🧠 Técnico: scale aumenta o tamanho. box-shadow adiciona profundidade.
 
 📌 Uso: Destaque visual, microinterações.
+
+🔹 Aplicar classe CSS dinamicamente a um registro de tabela
+javascript
+registroPaciente.classList.add("campo-invalido");
+🧠 Comentário técnico: Adiciona a classe .campo-invalido ao elemento HTML que representa um registro de paciente na tabela. Isso ativa estilos definidos no CSS, como borda vermelha ou fundo alterado.
+
+📌 Contexto de uso: Validação visual de dados em tabelas, como peso ou altura inválidos.
+
+🔹 Versão completa com nome técnico
+javascript
+function calcularIMC(registroPaciente) {
+    const peso = parseFloat(registroPaciente.querySelector(".info-peso").textContent);
+    const altura = parseFloat(registroPaciente.querySelector(".info-altura").textContent);
+    const campoIMC = registroPaciente.querySelector(".info-imc");
+
+    const pesoEhValido = peso > 0 && peso < 1000;
+    const alturaEhValida = altura > 0 && altura < 3.0;
+
+    if (!pesoEhValido) {
+        registroPaciente.querySelector(".info-peso").classList.add("campo-invalido");
+        campoIMC.textContent = "Peso inválido";
+        registroPaciente.style.backgroundColor = "salmon";
+        return;
+    }
+
+    if (!alturaEhValida) {
+        registroPaciente.querySelector(".info-altura").classList.add("campo-invalido");
+        campoIMC.textContent = "Altura inválida";
+        registroPaciente.style.backgroundColor = "salmon";
+        return;
+    }
+
+    const imc = peso / (altura * altura);
+    campoIMC.textContent = imc.toFixed(2);
+}
+🧠 Comentário técnico: registroPaciente representa uma linha da tabela HTML com os dados de um paciente. A função encapsula validação, cálculo e feedback visual.
+
+📌 Contexto de uso: Sistemas médicos, academias, apps de saúde, dashboards clínicos.
