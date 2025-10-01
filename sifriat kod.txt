@@ -1,0 +1,425 @@
+🔷 SEÇÃO 1 — Seleção e Manipulação de Elementos DOM
+javascript
+// Seleciona um único elemento pelo seletor CSS
+const titulo = document.querySelector(".titulo");
+
+// Altera o conteúdo textual do elemento selecionado
+titulo.textContent = "Aparecida Nutricionista";
+🧠 Comentário técnico: querySelector retorna o primeiro elemento que corresponde ao seletor. textContent altera o conteúdo visível, sem afetar atributos ou estrutura interna.
+
+📌 Contexto de uso: Atualização dinâmica de títulos, mensagens ou labels em páginas interativas.
+
+javascript
+// Seleciona todos os elementos com a classe .paciente
+const pacientes = document.querySelectorAll(".paciente");
+
+// Itera sobre cada paciente para aplicar lógica individual
+for (let i = 0; i < pacientes.length; i++) {
+    const paciente = pacientes[i];
+    // lógica aplicada ao paciente
+}
+🧠 Comentário técnico: querySelectorAll retorna um NodeList, que pode ser percorrido com for, forEach, ou Array.from().
+
+📌 Contexto de uso: Processamento em massa de elementos como linhas de tabela, cards ou inputs.
+
+🔷 SEÇÃO 2 — Conversão e Validação de Dados Numéricos
+javascript
+// Converte texto para número decimal
+const peso = parseFloat(paciente.querySelector(".info-peso").textContent);
+const altura = parseFloat(paciente.querySelector(".info-altura").textContent);
+🧠 Comentário técnico: parseFloat é essencial para garantir que operações matemáticas sejam feitas com números reais. Evita erros silenciosos de concatenação de strings.
+
+📌 Contexto de uso: Cálculos, validações, comparações numéricas, gráficos.
+
+javascript
+// Validação de intervalo seguro para peso e altura
+const pesoEhValido = peso > 0 && peso < 1000;
+const alturaEhValida = altura > 0 && altura < 3.0;
+🧠 Comentário técnico: Validações devem ser feitas antes de qualquer cálculo. Evita divisão por zero, resultados absurdos ou falhas visuais.
+
+📌 Contexto de uso: Formulários médicos, cadastros, dashboards de saúde.
+
+🔷 SEÇÃO 3 — Cálculo e Formatação de Resultados
+javascript
+// Cálculo do IMC com formatação
+if (pesoEhValido && alturaEhValida) {
+    const imc = peso / (altura * altura);
+    paciente.querySelector(".info-imc").textContent = imc.toFixed(2);
+}
+🧠 Comentário técnico: .toFixed(2) garante consistência visual e evita excesso de casas decimais. O cálculo segue a fórmula padrão do IMC.
+
+📌 Contexto de uso: Aplicações de saúde, academias, clínicas, apps de nutrição.
+
+🔷 SEÇÃO 4 — Feedback Visual e Estilização Dinâmica
+javascript
+// Aplica estilo de erro em campos inválidos
+if (!pesoEhValido) {
+    paciente.querySelector(".info-peso").classList.add("campo-invalido");
+    paciente.style.backgroundColor = "salmon";
+}
+🧠 Comentário técnico: classList.add permite aplicar estilos definidos no CSS. style.backgroundColor altera diretamente o estilo inline.
+
+📌 Contexto de uso: Validação de formulários, alertas visuais, UX responsiva.
+
+🔷 SEÇÃO 5 — Encapsulamento em Funções Reutilizáveis
+javascript
+function calcularIMC(paciente) {
+    const peso = parseFloat(paciente.querySelector(".info-peso").textContent);
+    const altura = parseFloat(paciente.querySelector(".info-altura").textContent);
+    const imcField = paciente.querySelector(".info-imc");
+
+    const pesoEhValido = peso > 0 && peso < 1000;
+    const alturaEhValida = altura > 0 && altura < 3.0;
+
+    if (!pesoEhValido) {
+        paciente.querySelector(".info-peso").classList.add("campo-invalido");
+        imcField.textContent = "Peso inválido";
+        paciente.style.backgroundColor = "salmon";
+        return;
+    }
+
+    if (!alturaEhValida) {
+        paciente.querySelector(".info-altura").classList.add("campo-invalido");
+        imcField.textContent = "Altura inválida";
+        paciente.style.backgroundColor = "salmon";
+        return;
+    }
+
+    const imc = peso / (altura * altura);
+    imcField.textContent = imc.toFixed(2);
+}
+🧠 Comentário técnico: Funções encapsulam lógica, reduzem repetição e aumentam legibilidade. Ideal para modularização e testes unitários.
+
+📌 Contexto de uso: Componentes reutilizáveis, sistemas escaláveis, bibliotecas internas.
+
+🟦 SEÇÃO 7 — Estrutura de Tabela HTML
+html
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Peso</th>
+      <th>Altura</th>
+      <th>IMC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="paciente">
+      <td class="info-nome">João</td>
+      <td class="info-peso">80</td>
+      <td class="info-altura">1.75</td>
+      <td class="info-imc">0</td>
+    </tr>
+  </tbody>
+</table>
+Explicação: Estrutura básica de uma tabela com dados de pacientes. Cada célula tem uma classe específica para facilitar a manipulação via JavaScript.
+
+
+🟨 SEÇÃO 8 — Eventos e Interatividade com JavaScript
+🔹 Detectar clique em botão
+javascript
+var botao = document.querySelector("#botao-adicionar");
+botao.addEventListener("click", function() {
+    console.log("Botão clicado!");
+});
+Explicação: Escuta o clique no botão com ID botao-adicionar e executa uma função. Ideal para acionar ações como adicionar dados ou abrir modais.
+
+🔹 Prevenir comportamento padrão (como envio de formulário)
+javascript
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+});
+Explicação: Impede que o formulário seja enviado automaticamente. Usado para validar dados antes de enviar ou para manipular o envio via JavaScript.
+
+🔹 Capturar valor de um campo de texto
+javascript
+var nome = document.querySelector("#campo-nome").value;
+Explicação: Pega o valor digitado pelo usuário no campo com ID campo-nome. Pode ser usado para validação ou para exibir em outro lugar.
+
+🔹 Validar se campo está vazio
+javascript
+if (nome.trim() === "") {
+    alert("O campo nome não pode estar vazio.");
+}
+Explicação: Verifica se o campo está vazio ou só tem espaços. trim() remove espaços antes e depois do texto.
+
+🔹 Adicionar novo paciente à tabela
+javascript
+var linha = document.createElement("tr");
+linha.classList.add("paciente");
+
+var celulaNome = document.createElement("td");
+celulaNome.classList.add("info-nome");
+celulaNome.textContent = nome;
+
+linha.appendChild(celulaNome);
+tabela.appendChild(linha);
+Explicação: Cria uma nova linha na tabela com os dados do paciente. Pode ser expandido para incluir peso, altura, gordura e IMC.
+
+🔹 Resetar formulário após envio
+javascript
+form.reset();
+Explicação: Limpa todos os campos do formulário. Usado após adicionar dados com sucesso.
+
+🔹 Mostrar mensagem de erro visual
+javascript
+campo.classList.add("campo-invalido");
+Explicação: Aplica estilo visual (como borda vermelha) ao campo com erro. A classe deve estar definida no CSS.
+
+🔹 Remover classe de erro
+javascript
+campo.classList.remove("campo-invalido");
+Explicação: Remove o estilo de erro quando o campo é corrigido. Ideal para feedback visual dinâmico.
+
+🟨 SEÇÃO 9 — Eventos e Formulários Avançados (JavaScript)
+Esta seção cobre interações complexas com formulários, validações em tempo real, manipulação de eventos e feedback dinâmico.
+
+🔹 Escutar múltiplos eventos em um campo
+javascript
+const campoEmail = document.querySelector("#email");
+
+campoEmail.addEventListener("focus", () => {
+    campoEmail.classList.add("campo-ativo");
+});
+
+campoEmail.addEventListener("blur", () => {
+    campoEmail.classList.remove("campo-ativo");
+});
+
+campoEmail.addEventListener("input", () => {
+    validarEmail(campoEmail.value);
+});
+🧠 Comentário técnico: focus e blur controlam o estado visual do campo. input permite validação em tempo real conforme o usuário digita.
+
+📌 Contexto de uso: UX responsiva, formulários inteligentes, validação progressiva.
+
+🔹 Validação de e-mail com regex
+javascript
+function validarEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const valido = regex.test(email);
+
+    if (!valido) {
+        campoEmail.classList.add("campo-invalido");
+    } else {
+        campoEmail.classList.remove("campo-invalido");
+    }
+}
+🧠 Comentário técnico: Expressões regulares são poderosas para validar padrões. Este regex cobre e-mails comuns sem exigir domínio técnico do usuário.
+
+📌 Contexto de uso: Formulários de login, cadastro, newsletter.
+
+🔹 Capturar e processar envio de formulário
+javascript
+const form = document.querySelector("#formulario");
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const dados = new FormData(form);
+    const nome = dados.get("nome");
+    const email = dados.get("email");
+
+    console.log("Dados enviados:", nome, email);
+});
+🧠 Comentário técnico: FormData permite capturar todos os campos do formulário sem precisar selecionar cada um manualmente.
+
+📌 Contexto de uso: APIs, envio AJAX, integração com backend.
+
+🔹 Validação de múltiplos campos com feedback visual
+javascript
+function validarFormulario() {
+    const campos = document.querySelectorAll(".campo-obrigatorio");
+
+    campos.forEach(campo => {
+        if (campo.value.trim() === "") {
+            campo.classList.add("campo-invalido");
+        } else {
+            campo.classList.remove("campo-invalido");
+        }
+    });
+}
+🧠 Comentário técnico: forEach permite aplicar lógica a todos os campos obrigatórios. trim() evita espaços em branco como entrada válida.
+
+📌 Contexto de uso: Formulários robustos, UX acessível, validação antes de envio.
+
+🟦 SEÇÃO 10 — Animações CSS e Transições
+Esta seção cobre efeitos visuais suaves, transições entre estados e animações que melhoram a experiência do usuário.
+
+🔹 Transição suave de cor ao passar o mouse
+css
+.botao {
+    background-color: #0c8cd3;
+    transition: background-color 0.3s ease;
+}
+
+.botao:hover {
+    background-color: #04324c;
+}
+🧠 Comentário técnico: transition aplica suavidade à mudança de cor. ease define uma curva de aceleração natural.
+
+📌 Contexto de uso: Botões interativos, menus, feedback visual.
+
+🔹 Animação de entrada com @keyframes
+css
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+🧠 Comentário técnico: @keyframes define os estados da animação. forwards mantém o estado final após a execução.
+
+📌 Contexto de uso: Cards, modais, elementos que aparecem dinamicamente.
+
+🔹 Animação contínua (loop infinito)
+css
+@keyframes girar {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.icone-carregando {
+    animation: girar 1s linear infinite;
+}
+🧠 Comentário técnico: infinite repete a animação sem parar. linear mantém velocidade constante.
+
+📌 Contexto de uso: Indicadores de carregamento, ícones animados, feedback de espera.
+
+🔹 Transição de múltiplas propriedades
+css
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+🧠 Comentário técnico: Transições podem ser aplicadas a várias propriedades simultaneamente. scale aumenta o tamanho, box-shadow adiciona profundidade.
+
+📌 Contexto de uso: Efeitos de destaque, interações visuais, microinterações.
+
+Se quiser, posso continuar com seções sobre responsividade com media queries, integração com APIs usando fetch, ou componentização com React. Qual tema você quer explorar na próxima expansão?
+
+Perfeito! Vamos aprofundar sua biblioteca com duas seções técnicas e extensas: Eventos e Formulários Avançados e Animações CSS e Transições. Cada item vem com código, explicação técnica e contexto de uso — ideal para projetos profissionais e estudo contínuo.
+
+🟨 SEÇÃO 11 — Eventos e Formulários Avançados (JavaScript)
+🔹 Escutar múltiplos eventos em campos de formulário
+javascript
+const campo = document.querySelector("#nome");
+
+campo.addEventListener("focus", () => campo.classList.add("ativo"));
+campo.addEventListener("blur", () => campo.classList.remove("ativo"));
+campo.addEventListener("input", () => validarCampo(campo));
+🧠 Técnico: focus e blur controlam o estado visual do campo. input permite validação em tempo real.
+
+📌 Uso: Formulários interativos, UX responsiva.
+
+🔹 Validação com regex (e-mail)
+javascript
+function validarEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+🧠 Técnico: Expressão regular que cobre formatos comuns de e-mail. Retorna true ou false.
+
+📌 Uso: Cadastro, login, newsletter.
+
+🔹 Capturar envio de formulário e impedir comportamento padrão
+javascript
+const form = document.querySelector("#formulario");
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  const dados = new FormData(form);
+  const nome = dados.get("nome");
+  const email = dados.get("email");
+  console.log("Enviado:", nome, email);
+});
+🧠 Técnico: FormData extrai os dados sem precisar acessar cada campo manualmente.
+
+📌 Uso: Integração com APIs, envio AJAX.
+
+🔹 Validação de múltiplos campos obrigatórios
+javascript
+function validarCamposObrigatorios() {
+  const campos = document.querySelectorAll(".obrigatorio");
+
+  campos.forEach(campo => {
+    if (campo.value.trim() === "") {
+      campo.classList.add("erro");
+    } else {
+      campo.classList.remove("erro");
+    }
+  });
+}
+🧠 Técnico: trim() remove espaços. forEach aplica a todos os campos.
+
+📌 Uso: Formulários robustos, feedback visual.
+
+🔹 Resetar formulário após envio
+javascript
+form.reset();
+🧠 Técnico: Limpa todos os campos do formulário.
+
+📌 Uso: Após envio bem-sucedido, para preparar novo preenchimento.
+
+🟦 SEÇÃO 12 — Animações CSS e Transições
+🔹 Transição suave de cor ao passar o mouse
+css
+.botao {
+  background-color: #0c8cd3;
+  transition: background-color 0.3s ease;
+}
+
+.botao:hover {
+  background-color: #04324c;
+}
+🧠 Técnico: transition suaviza a mudança de cor. ease aplica curva de aceleração.
+
+📌 Uso: Botões, menus, interações visuais.
+
+🔹 Animação de entrada com @keyframes
+css
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+🧠 Técnico: @keyframes define os estados da animação. forwards mantém o estado final.
+
+📌 Uso: Cards, modais, elementos dinâmicos.
+
+🔹 Animação contínua (loop infinito)
+css
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.icone-carregando {
+  animation: girar 1s linear infinite;
+}
+🧠 Técnico: infinite repete sem parar. linear mantém velocidade constante.
+
+📌 Uso: Indicadores de carregamento, ícones animados.
+
+🔹 Transição de múltiplas propriedades
+css
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+🧠 Técnico: scale aumenta o tamanho. box-shadow adiciona profundidade.
+
+📌 Uso: Destaque visual, microinterações.
